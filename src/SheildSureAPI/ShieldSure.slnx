@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="ProjectDetails.MD" />
+  </Folder>
+  <Project Path="ShieldSure.Claim/ShieldSure.Claim.csproj" />
+  <Project Path="ShieldSure.Gateway/ShieldSure.Gateway.csproj" />
+  <Project Path="ShieldSure.Identity/ShieldSure.Identity.csproj" />
+  <Project Path="ShieldSure.Notification/ShieldSure.Notification.csproj" />
+  <Project Path="ShieldSure.Policy/ShieldSure.Policy.csproj" />
+</Solution>

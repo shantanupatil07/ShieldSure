@@ -1,0 +1,6 @@
+@ShieldSure.Gateway_HostAddress = http://localhost:5129
+
+GET {{ShieldSure.Gateway_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

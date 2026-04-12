@@ -1,0 +1,26 @@
+mkdir ShieldSure
+cd ShieldSure
+
+---
+# The Entry Point
+dotnet new webapi -n ShieldSure.Gateway -f net10.0
+
+# The Services
+dotnet new webapi -n ShieldSure.Identity -f net10.0
+dotnet new webapi -n ShieldSure.Policy -f net10.0
+dotnet new webapi -n ShieldSure.Claim -f net10.0
+
+# The Background Worker (for Notifications/Emails)
+dotnet new worker -n ShieldSure.Notification -f net10.0
+--
+dotnet new sln -n ShieldSure
+dotnet sln add ShieldSure.Gateway
+dotnet sln add ShieldSure.Identity
+dotnet sln add ShieldSure.Policy
+dotnet sln add ShieldSure.Claim
+dotnet sln add ShieldSure.Notification
+-------
+dotnet ef migrations add InitialIdentitySetup //ShieldSure.Identity
+dotnet ef database update
+---------
+
