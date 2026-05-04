@@ -2,6 +2,7 @@
   <Folder Name="/Solution Items/">
     <File Path="ProjectDetails.MD" />
   </Folder>
+  <Project Path="../../tests/ShieldSure.Identity.Tests/ShieldSure.Identity.Tests.csproj" />
   <Project Path="ShieldSure.Claim/ShieldSure.Claim.csproj" />
   <Project Path="ShieldSure.Gateway/ShieldSure.Gateway.csproj" />
   <Project Path="ShieldSure.Identity/ShieldSure.Identity.csproj" />

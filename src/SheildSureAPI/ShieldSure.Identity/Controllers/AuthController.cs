@@ -8,10 +8,10 @@ using System.ClientModel.Primitives;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using ShieldSure.Identity.Services.Interfaces;
 
 
-
-namespace ShieldSure.Identity.Controllers
+namespace ShieldSure.Identity.Controllers                      
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -20,12 +20,14 @@ namespace ShieldSure.Identity.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly IAuthService _authService;
 
-        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration)
+        public AuthController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, IConfiguration configuration, IAuthService authService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _authService = authService;
         }
 
         [HttpPost("register")]
@@ -56,37 +58,13 @@ namespace ShieldSure.Identity.Controllers
 
             if (User != null && await _userManager.CheckPasswordAsync(User, loginDto.Password))
             {
-                var token = GenerateJwtToken(User);
+                var token = _authService.GenerateJwtToken(User);
                 return Ok(new { token = token });
             }
-
 
             return Unauthorized();
         }
 
-
-        private string GenerateJwtToken(ApplicationUser user)
-        {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var claims = new[]
-            {
-                new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim("id", user.Id)
-            };
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddMinutes(120),
-                signingCredentials: credentials
-                );
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
 
 
         [Authorize]
@@ -94,6 +72,16 @@ namespace ShieldSure.Identity.Controllers
         public IActionResult TestAuth()
         {
             return Ok(new { message = "Great you have been authenticated with the JWT" });
+        }
+
+        [HttpGet("profile")]
+        public IActionResult GetProfile()
+        {
+            // These are pulled directly from the decrypted JWT
+            var firstName = User.FindFirst("firstName")?.Value;
+            var department = User.FindFirst("dept")?.Value;
+
+            return Ok($"Hello {firstName} from the {department} department!");
         }
 
     }
