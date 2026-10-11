@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:latest
+    container_name: identity-db-postgres-container
+    environment:
+      POSTGRES_USER: identityuser
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: IdentityDb  # Optional: Automatically creates this database on startup
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

@@ -1,0 +1,1 @@
+public enum AgentStatus { PendingApproval, Active, Suspended, Terminated }
