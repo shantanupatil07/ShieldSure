@@ -27,6 +27,8 @@ public static class DependencyInjection
             .AddEntityFrameworkStores<AuthDbContext>();
 
         services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<IIdentityService, IdentityService>();
+        services.AddScoped<ITokenGenerator, JwtTokenGenerator>();   // new
 
         return services;
     }
